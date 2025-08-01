@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>minz my beloved</title>
+  <!-- Google Fonts: Dancing Script -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #000000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      color: #FFFFFF;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transition: opacity 2.5s ease;
+    }
+
+    .fade-in.show {
+      opacity: 1;
+    }
+
+    img {
+      max-width: 300px;
+      height: auto;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    h1 {
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn {
+      background-color: white;
+      border: 2px solid #000000;
+      color: #333;
+      padding: 10px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      z-index: 9999;
+      height: 40px;
+      line-height: 18px;
+      width: 120px;
+      box-sizing: border-box;
+      position: absolute;
+      top: 0;
+    }
+
+    .btn:hover {
+      background-color: #FFFFFF;
+    }
+
+    #buttonContainer {
+      position: relative;
+      height: 50px;
+      width: 320px;
+      margin-top: 10px;
+      z-index: 9999;
+    }
+
+    #yesBtn {
+      left: 0;
+    }
+
+    #noBtn {
+      left: 200px;
+      transition: left 0.15s ease, top 0.15s ease;
+    }
+
+    #noBtnPlaceholder {
+      position: absolute;
+      top: 0;
+      left: 160px;
+      width: 120px;
+      height: 40px;
+      visibility: hidden;
+      z-index: 1;
+    }
+
+    #rose-background {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .rose-icon {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      opacity: 0.60;
+      user-select: none;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      will-change: transform;
+    }
+
+    #sideContainer {
+      position: fixed;
+      top: 5vh;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      z-index: 3;
+    }
+
+    #spotifyFrame {
+      border-radius: 12px;
+      border: none;
+      width: 320px;
+      height: 380px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    #sideImage {
+      width: 280px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      user-select: none;
+      pointer-events: none;
+      margin-left: -400px;
+    }
+
+    #leftSideContainer {
+      position: fixed;
+      top: 7vh;
+      left: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      z-index: 3;
+    }
+
+    #leftSideImage {
+      width: 350px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      user-select: none;
+      pointer-events: none;
+      margin-right: 20px;
+    }
+
+    #leftSideImage2 {
+      width: 500vw;
+      height: auto;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+      user-select: none;
+      pointer-events: none;
+      margin-top: 200px;
+      position: relative;
+      left: 70px;
+    }
+
+    #letter {
+      position: fixed;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 620px;
+      max-height: 80vh;
+      padding: 30px 40px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #333;
+      font-family: 'Dancing Script', cursive;
+      font-size: 22px;
+      font-weight: bold;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+      overflow-y: auto;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      z-index: 10;
+      white-space: pre-wrap;
+      user-select: text;
+    }
+
+    /* Corner images for "Yes" click */
+    .yesImage {
+      position: fixed;
+      width: 120px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      opacity: 0;
+      transition: opacity 7s ease;
+      z-index: 10;
+    }
+
+    #yesImageTopLeft {
+      top: 50px;
+      left: 80px;
+      width: 700px;
+      height: auto;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    #yesImageTopRight {
+      top: 20px;
+      right: 20px;
+      width: 700px;
+      height: auto;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+
+    #yesImageBottomLeft {
+      bottom: 50px;
+      left: 200px;
+      width: 700px;
+      height: auto;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+
+    }
+
+    #yesImageBottomRight {
+      bottom: -10px;
+      right: 275px;
+      width: 300px;
+      height: auto;
+      border-radius: 50px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div id="rose-background"></div>
+
+  <img id="gif" class="fade-in" src="https://media.tenor.com/SJpl5RBwIwsAAAAi/cute-love.gif" alt="Cute gif" />
+  <h1 id="question" class="fade-in">do you love me?</h1>
+  <div id="buttonContainer" class="fade-in">
+    <a href="#" class="btn" id="yesBtn">Yes</a>
+    <button class="btn" id="noBtn">No</button>
+    <div id="noBtnPlaceholder"></div>
+  </div>
+
+  <audio id="clickSound" src="https://orangefreesounds.com/wp-content/uploads/2021/02/Button-click-sound-effect.mp3" preload="auto"></audio>
+
+  <div id="leftSideContainer" class="fade-in">
+    <img id="leftSideImage" src="https://cdn.discordapp.com/attachments/1290694222864846890/1400680878899859537/image.png?ex=688d8538&is=688c33b8&hm=0f207f39fee8cac92bb824c9c803acf9d1fcfba6ed5604fe5daaf00583fc1985&" alt="Left Side Image" />
+    <img id="leftSideImage2" src="https://cdn.discordapp.com/attachments/1256764565199261719/1399066257830969486/image.png?ex=688ceb7d&is=688b99fd&hm=c9f50c2e12dcb653c3dbe722c786608e900d459bcc58f80375ea5e68d6ce7b2f&" alt="Left Side Image 2" />
+  </div>
+
+  <div id="sideContainer" class="fade-in">
+    <iframe id="spotifyFrame" src="https://open.spotify.com/embed/playlist/13Hn3jdfcIGz9q3qrehhbI?si=6ce4e31558734b95" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify Playlist"></iframe>
+    <img id="sideImage" src="https://cdn.discordapp.com/attachments/1297429990220238849/1399036971275391036/IMG_4216.png?ex=688d78f6&is=688c2776&hm=fcbe2dd91c48c30bb56177681691b4b21b6a1cee95734c11b67ad63473a96753&" alt="Side Image" />
+  </div>
+
+  <div id="letter">
+    Dear Mindy,
+
+       Happy national girlfriend day to the prettiest, funniest and most amazing girl ever, i hope you understand just how much i love you even though sometimes i don't really express it properly. 
+
+       You're always on top of my mind. The first, last and only person i think of throughout the day, you're very special to me, you make my days brighter and i hope i get to be a part of you for as long as possible <3
+
+    I love you,<br />
+    Stef 💌
+  </div>
+
+  <!-- 4 Corner Images -->
+  <img class="yesImage" id="yesImageTopLeft" src="https://media.discordapp.net/attachments/1290694222864846890/1400683783002259567/5151515151.jpg?ex=688d87ed&is=688c366d&hm=0733067ad3a3bf0933c96c8d48f731680f4cec384855c159b87948d383331ab8&=&format=webp&width=444&height=716" alt="Corner Image" />
+  <img class="yesImage" id="yesImageTopRight" src="https://media.discordapp.net/attachments/1290694222864846890/1400683783526678620/5555555555555555.jpg?ex=688d87ed&is=688c366d&hm=a909b681ad0ad4b35288c57146e9d0939d79f37fafeafb4341a140f876b17f7c&=&format=webp&width=408&height=717" alt="Corner Image" />
+  <img class="yesImage" id="yesImageBottomLeft" src="https://media.discordapp.net/attachments/1290694222864846890/1400683783900102716/eyes233.jpg?ex=688d87ed&is=688c366d&hm=12b96ffdfa69bdee43b13b13c95818a6fd920833b4361dad3a819060b6e7fd42&=&format=webp&width=1182&height=708" alt="Corner Image" />
+  <img class="yesImage" id="yesImageBottomRight" src="https://media.discordapp.net/attachments/1290694222864846890/1400683784323469404/hhghhg.jpg?ex=688d87ed&is=688c366d&hm=8d2a72b61b3bdbcf5bd6e05b5d5df02f4e0509b45097fe1bf77376b942c91de7&=&format=webp&width=403&height=716" alt="Corner Image" />
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const question = document.getElementById('question');
+    const gif = document.getElementById('gif');
+    const clickSound = document.getElementById('clickSound');
+    const letter = document.getElementById('letter');
+
+    let noClickCount = 0;
+    let dodgeActive = false;
+
+    const positions = [
+      { top: -350, left: 580 },
+      { top: -100, left: 300 },
+      { top: -150, left: -400 },
+      { top: 100, left: 300 },
+      { top: -200, left: -100 }
+    ];
+
+    function playClick() {
+      clickSound.currentTime = 0;
+      clickSound.play();
+    }
+
+    function moveNoButtonRandomly() {
+      const posIndex = Math.floor(Math.random() * positions.length);
+      const pos = positions[posIndex];
+      noBtn.style.top = pos.top + 'px';
+      noBtn.style.left = pos.left + 'px';
+    }
+
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      playClick();
+
+      noClickCount++;
+      if (noClickCount === 1) {
+        question.textContent = '....are you sure?';
+        gif.src = 'https://media.tenor.com/MbYcQufEa04AAAAi/cute-cat.gif';
+      } else if (noClickCount === 2) {
+        question.textContent = 'bwah are you REALLY sure?';
+        gif.src = 'https://cdn.discordapp.com/attachments/1290694222864846890/1400683670095925290/IMG_3239.jpg?ex=688d87d2&is=688c3652&hm=2e4a26e2564943441c796249b737287086370efd067fa9e33700f58dee7151a5&';
+        dodgeActive = true;
+      } else {
+        const posIndex = (noClickCount - 3) % positions.length;
+        const pos = positions[posIndex];
+        noBtn.style.top = pos.top + 'px';
+        noBtn.style.left = pos.left + 'px';
+      }
+    });
+
+    noBtn.addEventListener('mouseenter', () => {
+      if (dodgeActive) {
+        moveNoButtonRandomly();
+      }
+    });
+
+    yesBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      playClick();
+
+      const fadeElements = [
+        gif,
+        question,
+        noBtn,
+        yesBtn,
+        document.getElementById('buttonContainer'),
+        document.getElementById('leftSideContainer'),
+        document.getElementById('sideContainer')
+      ];
+
+      fadeElements.forEach(el => {
+        el.style.transition = 'opacity 1.5s ease';
+        el.style.opacity = 0;
+      });
+
+      setTimeout(() => {
+        letter.style.opacity = 1;
+
+        // Fade in corner images
+        ['yesImageTopLeft', 'yesImageTopRight', 'yesImageBottomLeft', 'yesImageBottomRight'].forEach(id => {
+          const img = document.getElementById(id);
+          if (img) img.style.opacity = 1;
+        });
+      }, 1600);
+    });
+
+    const roseBackground = document.getElementById('rose-background');
+    const roseIconURL = 'https://static.wikia.nocookie.net/emoji5546/images/c/c8/Twitter_Red_Heart.png/revision/latest/scale-to-width/360?cb=20210527161755g';
+    const numRoses = 45;
+
+    function randomBetween(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const roses = [];
+
+    for (let i = 0; i < numRoses; i++) {
+      const rose = document.createElement('img');
+      rose.src = roseIconURL;
+      rose.className = 'rose-icon';
+
+      rose.style.top = randomBetween(0, window.innerHeight - 30) + 'px';
+      rose.style.left = randomBetween(0, window.innerWidth - 30) + 'px';
+      rose.style.transform = `rotate(${randomBetween(0, 360)}deg)`;
+
+      roseBackground.appendChild(rose);
+
+      roses.push({
+        element: rose,
+        speed: randomBetween(0.3, 1),
+        x: parseFloat(rose.style.left),
+        y: parseFloat(rose.style.top),
+        rotation: randomBetween(0, 360),
+        rotationSpeed: Math.random() < 0.3 ? randomBetween(0.1, 0.3) : 0
+      });
+    }
+
+    function animateRoses() {
+      const height = window.innerHeight;
+      const width = window.innerWidth;
+
+      for (const rose of roses) {
+        rose.y += rose.speed;
+        if (rose.y > height) {
+          rose.y = -30;
+          rose.x = randomBetween(0, width - 30);
+          rose.rotation = randomBetween(0, 360);
+        }
+        rose.rotation += rose.rotationSpeed;
+        rose.element.style.top = rose.y + 'px';
+        rose.element.style.left = rose.x + 'px';
+        rose.element.style.transform = `rotate(${rose.rotation}deg)`;
+      }
+      requestAnimationFrame(animateRoses);
+    }
+
+    animateRoses();
+
+    window.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el => {
+        setTimeout(() => {
+          el.classList.add('show');
+        }, 100);
+      });
+    });
+  </script>
+</body>
+</html>
